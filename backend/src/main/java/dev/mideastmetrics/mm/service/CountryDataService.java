@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class CountryDataService {
-
     private CountryDataRepo countryDataRepo;
     private WorldBankApi worldBankApi;
 
@@ -33,21 +32,18 @@ public class CountryDataService {
         indicatorToSetterMap.put("GC.TAX.GSRV.RV.ZS", CountryData::setTaxes);
         indicatorToSetterMap.put("NE.IMP.GNFS.ZS", CountryData::setImportsOfGoodsAndServices);
         indicatorToSetterMap.put("NY.GDP.PCAP.CD", CountryData::setGdpPerCapita);
+        indicatorToSetterMap.put("NY.GDP.MKTP.CD", CountryData::setGdpValue);
 
         // Life Expectancy
         indicatorToSetterMap.put("SP.DYN.LE00.MA.IN", CountryData::setLifeExpectancyM);
         indicatorToSetterMap.put("SP.DYN.LE00.FE.IN", CountryData::setLifeExpectancyF);
         indicatorToSetterMap.put("SP.DYN.LE00.IN", CountryData::setLifeExpectancyT);
 
-//        indicatorToSetterMap.put("EG.ELC.ACCS.ZS", CountryData::setAccessToElectricity);
-//        indicatorToSetterMap.put("EG.CFT.ACCS.ZS", CountryData::setAccessToCleanFuels);
-
         // Population
         indicatorToSetterMap.put("SP.POP.TOTL.MA.IN", CountryData::setMalePop);
         indicatorToSetterMap.put("SP.POP.TOTL.FE.IN", CountryData::setFemalePop);
 
-//        indicatorToSetterMap.put("SE.ADT.LITR.ZS", CountryData::setLiteracyRateAdult);
-//        indicatorToSetterMap.put("SE.ADT.1524.LT.ZS", CountryData::setLiteracyRateYouth);
+        indicatorToSetterMap.put("SM.POP.NETM", CountryData::setNetMigration);
 
         // Mortality Rate
         indicatorToSetterMap.put("SP.DYN.AMRT.FE", CountryData::setMortalityRateF);
@@ -77,18 +73,6 @@ public class CountryDataService {
             for (String indicatorCode : indicatorToSetterMap.keySet()) {
                 List<Indicator> indicators = worldBankApi.fetchData(iso2Code, indicatorCode);
 
-                // TODO: Optimize process. save method costly. Replace with batch save.
-//                indicators.forEach(indicator -> {
-//                    CountryData countryData = mapToCountry(indicator);
-//
-//                    countryData.setTotalPop(countryData.getFemalePop() + countryData.getMalePop());
-//                    countryData.setMortalityRateT(countryData.getMortalityRateF() + countryData.getMortalityRateM());
-//
-//                    System.out.println(countryData);
-//                    countryDataRepo.save(countryData);
-//                });
-
-
                 List<CountryData> countriesData = indicators.stream()
                         .map(indicator -> {
                             CountryData countryData = mapToCountry(indicator);
@@ -99,7 +83,6 @@ public class CountryDataService {
                         .collect(Collectors.toList());
 
                 countryDataRepo.saveAll(countriesData);
-
             }
             System.out.println("Finished loading data for country: " + iso2Code);
         }

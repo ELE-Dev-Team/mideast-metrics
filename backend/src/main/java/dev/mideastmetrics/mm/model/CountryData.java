@@ -13,6 +13,7 @@ public class CountryData {
 
     private double gdpGrowth;
     private double gdpPerCapita;
+    private double gdpValue;
 
     private double lifeExpectancyM;
     private double lifeExpectancyF;
@@ -24,13 +25,8 @@ public class CountryData {
 
     private double crudeBirthRateT;
 
-//    private double accessToElectricity;
-//    private double accessToCleanFuels;
-
     private double taxes;
-
-//    private double literacyRateAdult;
-//    private double literacyRateYouth;
+    private double netMigration;
 
     private double importsOfGoodsAndServices;
 
@@ -196,27 +192,19 @@ public class CountryData {
         this.unemploymentRateM = unemploymentRateM;
     }
 
-    @Override
-    public String toString() {
-        return "CountryData{" +
-                "countryId=" + countryId +
-                ", gdpGrowth=" + gdpGrowth +
-                ", gdpPerCapita=" + gdpPerCapita +
-                ", lifeExpectancyM=" + lifeExpectancyM +
-                ", lifeExpectancyF=" + lifeExpectancyF +
-                ", lifeExpectancyT=" + lifeExpectancyT +
-                ", mortalityRateM=" + mortalityRateM +
-                ", mortalityRateF=" + mortalityRateF +
-                ", mortalityRateT=" + mortalityRateT +
-                ", crudeBirthRateT=" + crudeBirthRateT +
-                ", taxes=" + taxes +
-                ", importsOfGoodsAndServices=" + importsOfGoodsAndServices +
-                ", malePop=" + malePop +
-                ", femalePop=" + femalePop +
-                ", totalPop=" + totalPop +
-                ", unemploymentRateT=" + unemploymentRateT +
-                ", unemploymentRateF=" + unemploymentRateF +
-                ", unemploymentRateM=" + unemploymentRateM +
-                '}';
+    public double getNetMigration() {
+        return netMigration;
+    }
+
+    public void setNetMigration(double netMigration) {
+        this.netMigration = netMigration;
+    }
+
+    public double getGdpValue() {
+        return gdpValue;
+    }
+
+    public void setGdpValue(double gdpValue) {
+        this.gdpValue = gdpValue;
     }
 }

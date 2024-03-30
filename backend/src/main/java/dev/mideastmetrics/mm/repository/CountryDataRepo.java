@@ -14,5 +14,4 @@ public interface CountryDataRepo extends JpaRepository<CountryData, String> {
     CountryData findByCountryId(CountryId countryId);
     List<CountryData> findByCountryIdCountryName(String countryName);
     List<CountryData> findByCountryIdCountryNameAndCountryIdYear(String countryName, Year year);
-
 }
