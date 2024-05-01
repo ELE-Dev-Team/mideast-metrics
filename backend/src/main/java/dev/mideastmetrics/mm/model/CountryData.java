@@ -14,6 +14,7 @@ public class CountryData {
     private double gdpGrowth;
     private double gdpPerCapita;
     private double gdpValue;
+    private double pppValue;
 
     private double lifeExpectancyM;
     private double lifeExpectancyF;
@@ -206,5 +207,13 @@ public class CountryData {
 
     public void setGdpValue(double gdpValue) {
         this.gdpValue = gdpValue;
+    }
+
+    public double getPppValue() {
+        return pppValue;
+    }
+
+    public void setPppValue(double pppValue) {
+        this.pppValue = pppValue;
     }
 }

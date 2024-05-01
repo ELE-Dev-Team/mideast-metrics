@@ -33,6 +33,7 @@ public class CountryDataService {
         indicatorToSetterMap.put("NE.IMP.GNFS.ZS", CountryData::setImportsOfGoodsAndServices);
         indicatorToSetterMap.put("NY.GDP.PCAP.CD", CountryData::setGdpPerCapita);
         indicatorToSetterMap.put("NY.GDP.MKTP.CD", CountryData::setGdpValue);
+        indicatorToSetterMap.put("PA.NUS.PPP", CountryData::setPppValue);
 
         // Life Expectancy
         indicatorToSetterMap.put("SP.DYN.LE00.MA.IN", CountryData::setLifeExpectancyM);
