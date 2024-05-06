@@ -27,7 +27,7 @@ public class CountryDataService {
     private final static HashMap<String, SetterMethod> indicatorToSetterMap = new HashMap<>();
 
     static {
-        // Guap related
+        // Money related
         indicatorToSetterMap.put("NY.GDP.MKTP.KD.ZG", CountryData::setGdpGrowth);
         indicatorToSetterMap.put("GC.TAX.GSRV.RV.ZS", CountryData::setTaxes);
         indicatorToSetterMap.put("NE.IMP.GNFS.ZS", CountryData::setImportsOfGoodsAndServices);
@@ -66,11 +66,12 @@ public class CountryDataService {
     }
 
     public void loadAllDataFromApi() {
-
-        final String[] countries = new String[]{"dz", "bh", "km", "dj", "eg", "iq", "jo", "kw", "lb", "ly",
+        final String[] countries = new String[] {"dz", "bh", "km", "dj", "eg", "iq", "jo", "kw", "lb", "ly",
                 "mr", "ma", "om", "ps", "qa", "sa", "so", "sd", "sy", "tn", "ae", "ye"};
 
-        for (String iso2Code : countries) {
+        System.out.println("[!] Started data loading process...");
+        for (int i = 0; i < countries.length; i++) {
+            String iso2Code = countries[i];
             for (String indicatorCode : indicatorToSetterMap.keySet()) {
                 List<Indicator> indicators = worldBankApi.fetchData(iso2Code, indicatorCode);
 
@@ -85,9 +86,9 @@ public class CountryDataService {
 
                 countryDataRepo.saveAll(countriesData);
             }
-            System.out.println("Finished loading data for country: " + iso2Code);
+            System.out.printf("[+] Successfully loaded data for '%s' (%d/%d)%n", iso2Code, i+1, countries.length);
         }
-        System.out.println("Successfully loaded all data into database.");
+        System.out.println("[+] Data has been loaded successfully...");
     }
 
     private CountryData mapToCountry(Indicator indicator) {
@@ -127,5 +128,4 @@ public class CountryDataService {
             return countryDataRepo.findByCountryIdCountryName(countryName);
         }
     }
-
 }

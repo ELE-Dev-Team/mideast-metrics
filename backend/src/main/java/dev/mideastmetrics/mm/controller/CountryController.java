@@ -26,7 +26,6 @@ public class CountryController {
     @GetMapping()
     public ResponseEntity<List<CountryData>> getCountryData(@RequestParam("name") String countryName,
                                                             @RequestParam(value="year", required = false) Year year) {
-
         List<CountryData> data = countryDataService.getCountryData(countryName, year);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
@@ -34,7 +33,6 @@ public class CountryController {
     @GetMapping("test")
     public ResponseEntity<String> testEndpoint() {
         countryDataService.loadAllDataFromApi();
-
         return ResponseEntity.ok("");
     }
 
