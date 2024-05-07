@@ -29,11 +29,4 @@ public class CountryController {
         List<CountryData> data = countryDataService.getCountryData(countryName, year);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
-
-    @GetMapping("test")
-    public ResponseEntity<String> testEndpoint() {
-        countryDataService.loadAllDataFromApi();
-        return ResponseEntity.ok("");
-    }
-
 }
