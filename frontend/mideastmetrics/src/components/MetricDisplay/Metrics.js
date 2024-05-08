@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MetricDropDown from "./MetricDropDown";
 import Metric from "./Metric";
+import axios from "axios";
 import "/node_modules/flag-icons/css/flag-icons.min.css";
 
 export default function Metrics({
@@ -12,6 +13,29 @@ export default function Metrics({
   const [selectedMetric, setSelectedMetric] = useState(
     valid_metrics ? valid_metrics[0] : null
   );
+
+  const [countryMetric, setCountryMetric] = useState('');
+
+    async function getMetrics(selectedCountry, year) {
+        try {
+            const response = await fetch(`http://localhost:8080/api/v1/countries?name=${selectedCountry}&year=${year}`);
+
+            console.log(response);
+
+            // if (response.data.success) {
+            //     setCountryMetric(response);
+            //     console.log(response);
+            // } else {
+            //     console.log("FAIL");
+            // }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    useEffect(() => {
+        getMetrics(selectedCountry, "2022").then(r => console.log(r));
+    }, []);
   
   return (
     <div className="w-2/3 h-64 m-20 p-4 bg-stone-900/70 rounded outline outline-green-600 outline-5 text-white">
