@@ -15,7 +15,7 @@ const BackgroundVideoReel = () => {
   };
 
   return (
-    <div className="fixed -z-10 w-svw h-svh bg-cover">
+    <div className="fixed -z-20 w-svw h-svh bg-cover">
       <BackgroundVideoPlayer
         src={backgrounds[currentBackground]}
         disableBackgroundCover={true}
@@ -23,7 +23,6 @@ const BackgroundVideoReel = () => {
         loop={false}
         playsInline
         onEnd={handleVideoEnd}
-        className="absolute bg-repeat"
       />
     </div>
   );

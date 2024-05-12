@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from "react-simple-maps";
 import MENA from "../../assets/MENA_.geojson";
 
-function Map({ onSelectCountry, selectedCountry }) {
+function Map({ onSelectCountry, selectedCountry, setValidCountries }) {
   const [zoom, setZoom] = useState(1);
   const [center, setCenter] = useState([20, 6]);
   const [currentCountry, setCurrentCountry] = useState("");
@@ -27,13 +27,29 @@ function Map({ onSelectCountry, selectedCountry }) {
     setZoom(zoom => zoom / 1.2);
   };
 
+  function getValidCountries () {
+    let countries = [];
+    fetch(MENA)
+        .then((response) => response.json())
+        .then((data) => {
+          data.features.forEach((countryData) => {
+            countries.push(countryData.properties.ADMIN);
+          })
+        });
+    setValidCountries(countries);
+  }
+
+  useEffect(() => {
+    getValidCountries();
+  }, []);
+
   return (
     <div className="flex flex-col max-h-70 h-auto border rounded-lg border-3 bg-stone-900/70 mt-5 w-8/12"
       style={{
         maxHeight: "85svh"
       }}
     >
-      <div className="justify-between inline-flex items-center p-2">
+      <div className="justify-between inline-flex items-center p-2 ">
         <div className="flex items-center justify-self-start">
           <button onClick={onZoomIn} className="border-1 rounded mx-1 px-1.5 text-white">+</button>
           <button onClick={onZoomOut} className="border-1 rounded mx-1 px-1.5 text-white">-</button>
@@ -53,6 +69,7 @@ function Map({ onSelectCountry, selectedCountry }) {
             scale: 500,
           }}
           className="drop-shadow-[0_10px_10px_rgba(0,0,0,0.50)]"
+
         >
           <ZoomableGroup center={center} zoom={zoom}
             translateExtent={[[0, 0], [800, 1000]]}
