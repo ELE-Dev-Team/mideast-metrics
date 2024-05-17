@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from "react";
-import {LineChart} from "@mui/x-charts";
+import React, { useEffect, useState } from "react";
+import { BarChart } from "@mui/x-charts";
 import axios from "axios";
 
-
-export default function CountryVsCountryDistribution({ selectedMetric, selectedCountry, currentYear, validCountries }) {
+export default function CountryVsCountryDistribution({ selectedCountry, selectedMetric, currentYear, validCountries }) {
     const [countryMetric, setCountryMetric] = useState([]);
 
     useEffect(() => {
@@ -27,7 +26,7 @@ export default function CountryVsCountryDistribution({ selectedMetric, selectedC
             }
         }
         getMetrics();
-    }, [selectedCountry, currentYear, validCountries]);
+    }, [currentYear, validCountries]);
 
     function getSelectedDataDistribution(countryDataDistribution) {
         let dataArray = [];
@@ -57,39 +56,75 @@ export default function CountryVsCountryDistribution({ selectedMetric, selectedC
     }
 
     function parseData(val) {
-        console.log(val);
         switch (selectedMetric) {
             case 'gdpValue': {
                 return scaleMoneyPerBillion(val);
             }
             default:
-                return val
+                return val;
         }
     }
 
+    function isSelectedCountryInTopThree(topThreeData, selectedCountryData) {
+        return topThreeData.some(item => item.country === selectedCountryData.country);
+    }
+
     const chartData = getSelectedDataDistribution(countryMetric);
+    const topThreeData = [...chartData].sort((a, b) => b.val - a.val).slice(0, 3);
+    const selectedCountryData = chartData.find(item => item.country === selectedCountry);
+
+    const showSelectedCountry = selectedCountryData && !isSelectedCountryInTopThree(topThreeData, selectedCountryData);
 
     return (
-        <div
-            className="flex flex-col justify-between m-20 p-5 bg-slate-300 rounded outline outline-green-600 outline-5 text-white"
-            style={{
-                width: '66svw',
-                height: '70svh'
-            }}>
-            <div className="flex justify-content-center text-center text-black">
-                {chartData.length !== 0 && <h1>{(`Rankings for ${selectedMetric} in ${currentYear}`).toUpperCase()}</h1>}
+        <div className="flex flex-col items-center justify-center h-full">
+            <div
+                className="flex flex-col p-5 bg-slate-50 rounded outline outline-green-600 outline-5 text-white"
+                style={{
+                    width: '66vw',
+                    height: '70vh'
+                }}>
+                <div className="flex justify-center text-center text-black">
+                    {chartData.length !== 0 &&
+                        <h1>{(`Rankings for ${selectedMetric} in ${currentYear}`).toUpperCase()}</h1>}
+                </div>
+                <hr />
+                <BarChart
+                    series={[
+                        { data: chartData.map(item => item.val) },
+                    ]}
+                    grid={{ vertical: true, horizontal: true }}
+                    yAxis={[{ label: `${selectedMetric}` }]}
+                    xAxis={[{ data: chartData.map(item => item.country), label: 'Country', scaleType: 'band' }]}
+                    margin={{ top: 10, bottom: 70, left: 70, right: 10 }}
+                    colors={['#365314']}
+                />
             </div>
-            <hr/>
-            <LineChart
-                series={[
-                    {data: chartData.map(item => item.val)},
-                ]}
-                grid={{vertical: true, horizontal: true}}
-                yAxis={[{label: `${selectedMetric}`}]}
-                xAxis={[{data: chartData.map(item => item.country), label: 'Year', scaleType: 'band',}]}
-                margin={{top: 10, bottom: 70, left: 70, right: 10}}
-                colors={['#365314']}
-            />
+            <div
+                className="flex flex-col p-5 mt-4 bg-slate-50 rounded outline outline-green-600 outline-5 text-black"
+                style={{
+                    width: '66vw'
+                }}>
+                <div className="text-center mb-4">
+                    {topThreeData.length !== 0 &&
+                        <h1 className="font-bold">{`Top 3 Countries for ${selectedMetric} in ${currentYear}`.toUpperCase()}</h1>}
+                </div>
+                <hr className="mb-3" />
+                <ul className="list-decimal pl-6">
+                    {topThreeData.map((item, index) => (
+                        <li key={index} className="mb-2" style={{ color: item.country === selectedCountry ? 'red' : 'black', fontWeight: item.country === selectedCountry ? 'bold' : 'normal' }}>
+                            <span>{`${item.country}: `}</span><span className="font-normal">{item.val}</span>
+                        </li>
+                    ))}
+                    {showSelectedCountry && (
+                        <>
+                            <li className="mt-4 font-bold">...</li>
+                            <li className="mb-2" style={{ color: 'red', fontWeight: 'bold' }}>
+                                <span>{`${selectedCountryData.country}: `}</span><span className="font-normal">{selectedCountryData.val}</span>
+                            </li>
+                        </>
+                    )}
+                </ul>
+            </div>
         </div>
     );
 }
