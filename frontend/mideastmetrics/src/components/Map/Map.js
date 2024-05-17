@@ -3,7 +3,7 @@ import { ComposableMap, Geographies, Geography, ZoomableGroup } from "react-simp
 import { PlusIcon, MinusIcon, RefreshIcon, SearchIcon } from '@heroicons/react/solid';
 import MENA from "../../assets/MENA_.geojson";
 
-function Map({ onSelectCountry, selectedCountry, setValidCountries }) {
+export default function Map({ onSelectCountry, selectedCountry, setValidCountries }) {
   const [zoom, setZoom] = useState(1);
   const [center, setCenter] = useState([20, 10]);
   const [currentCountry, setCurrentCountry] = useState("");
@@ -132,5 +132,3 @@ function Map({ onSelectCountry, selectedCountry, setValidCountries }) {
       </div>
   );
 }
-
-export default Map;

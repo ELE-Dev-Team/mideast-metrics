@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import BackgroundVideoPlayer from 'react-background-video-player';
-import video1 from '../assets/background_videos/egypt.mp4';
-import video2 from '../assets/background_videos/morocco.mp4';
-import video3 from '../assets/background_videos/qatar.mp4';
+import video1 from '../../assets/background_videos/egypt.mp4';
+import video2 from '../../assets/background_videos/morocco.mp4';
+import video3 from '../../assets/background_videos/qatar.mp4';
 
 const backgrounds = [video1, video2, video3];
 
-const BackgroundVideoReel = () => {
+export default function BackgroundVideoReel(){
     const [currentBackground, setCurrentBackground] = useState(0);
 
     const handleVideoEnd = () => {
@@ -28,5 +28,3 @@ const BackgroundVideoReel = () => {
         </div>
     );
 };
-
-export default BackgroundVideoReel;

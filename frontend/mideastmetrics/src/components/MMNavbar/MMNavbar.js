@@ -1,7 +1,7 @@
 import MMLogo from "../../assets/mideastmetricslogo.png";
 import React from "react";
 
-function MMNavbar() {
+export default function MMNavbar() {
   return (
       <div className="w-full bg-gray-900 text-white shadow-lg p-4 relative flex items-center justify-center drop-shadow-[0_10px_15px_rgba(0,0,0,0.75)]">
         <div className="flex items-center space-x-2">
@@ -16,5 +16,3 @@ function MMNavbar() {
       </div>
   );
 }
-
-export default MMNavbar;

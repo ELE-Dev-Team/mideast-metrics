@@ -3,8 +3,8 @@ import Map from "./components/Map/Map";
 import "bootstrap/dist/css/bootstrap.min.css";
 import MMNavbar from "./components/MMNavbar/MMNavbar";
 import MENA from "./assets/MENA_.geojson";
-import BackgroundVideoReel from "./components/BackgroundVideoReel";
-import Sidebar from "./components/Sidebar";
+import BackgroundVideoReel from "./components/Background/BackgroundVideoReel";
+import Sidebar from "./components/Sidebar/Sidebar";
 import CountryYearDistribution from "./components/MetricDisplay/CountyYearDistribution";
 import CountryVsCountryDistribution from "./components/MetricDisplay/CountryVsCountryDistribution";
 import { MenuIcon  } from '@heroicons/react/solid';
@@ -67,22 +67,35 @@ function App() {
   };
 
   function handleSideBarClick(selectedComponent) {
-    console.log(selectedComponent);
     setCurrentTab(selectedComponent);
   }
 
   function renderTab() {
     switch(currentTab) {
       case 'View Map':
-        return <Map
-            onSelectCountry={handleCountrySelect}
-            selectedCountry={selectedCountry}
-            setValidCountries={setValidCountries}
-        />;
+        return (
+            <Map
+                onSelectCountry={handleCountrySelect}
+                selectedCountry={selectedCountry}
+                setValidCountries={setValidCountries}
+            />
+        );
       case 'M2Y':
-        return <CountryYearDistribution selectedMetric={selectedMetric} selectedCountry={selectedCountry} currentYear={currentYear}/>;
+        return (
+            <CountryYearDistribution
+                selectedMetric={selectedMetric}
+                selectedCountry={selectedCountry}
+                currentYear={currentYear}/>
+        );
       case 'C2C':
-        return <CountryVsCountryDistribution selectedCountry={selectedCountry} selectedMetric={selectedMetric} currentYear={currentYear} validCountries={validCountries}/>;
+        return (
+            <CountryVsCountryDistribution
+                  selectedCountry={selectedCountry}
+                  selectedMetric={selectedMetric}
+                  currentYear={currentYear}
+                  validCountries={validCountries}
+            />
+        );
       default:
         break;
     }
