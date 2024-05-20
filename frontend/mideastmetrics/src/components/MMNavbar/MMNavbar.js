@@ -1,21 +1,18 @@
 import MMLogo from "../../assets/mideastmetricslogo.png";
+import React from "react";
 
-function MMNavbar() {
+export default function MMNavbar() {
   return (
-    <div className="bg-stone-900/70">
-      <div className="flex justify-between tracking-widest text-white font-serif font-extrabold">
-        <div className="flex items-center justify-center flex-grow">
-          <h1>MIDEAST</h1>
+      <div className="w-full bg-gray-900 text-white shadow-lg p-4 relative flex items-center justify-center drop-shadow-[0_10px_15px_rgba(0,0,0,0.75)]">
+        <div className="flex items-center space-x-2">
+          <h1 className="text-xl font-bold tracking-widest">MIDEAST</h1>
           <img
-            src={MMLogo}
-            className="w-24"
+              src={MMLogo ? MMLogo : null}
+              className="w-16"
+              alt="Logo for Mideast Metrics"
           />
-          <h1>METRICS</h1>
+          <h1 className="text-xl font-bold tracking-widest">METRICS</h1>
         </div>
       </div>
-    </div>
   );
 }
-
-
-export default MMNavbar;
