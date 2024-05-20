@@ -1,0 +1,13 @@
+.MuiChartsAxis-directionX .MuiChartsAxis-tickLabel {
+    transform: translateY(20px) rotate(-45deg);
+    text-anchor: end;
+    line-height: 1.5;
+}
+
+.MuiChartsAxis-directionX .MuiChartsAxis-label {
+    transform: translateY(30px);
+}
+
+.MuiChartsAxis-directionY .MuiChartsAxis-label {
+    transform: translateX(-20px);
+}
