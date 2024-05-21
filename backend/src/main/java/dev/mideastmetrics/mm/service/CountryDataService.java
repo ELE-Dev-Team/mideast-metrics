@@ -92,7 +92,7 @@ public class CountryDataService {
     }
 
     private CountryData mapToCountry(Indicator indicator) {
-        String countryName = indicator.getCountry().getValue();
+        String countryName = cleanCountryName(indicator.getCountry().getValue());
         Year year = null;
 
         try {
@@ -128,4 +128,16 @@ public class CountryDataService {
             return countryDataRepo.findByCountryIdCountryName(countryName);
         }
     }
+
+    private String cleanCountryName(String countryName) {
+        countryName = countryName.replace(", Arab Rep.", "")
+                .replace("Arab Republic", "")
+                .replace("West Bank and Gaza", "Palestine")
+                .replace(", Rep.", "");
+
+        countryName = countryName.toLowerCase().trim();
+
+        return countryName;
+    }
+
 }
