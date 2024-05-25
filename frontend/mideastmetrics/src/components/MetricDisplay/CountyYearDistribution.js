@@ -46,7 +46,7 @@ export default function CountryYearDistribution({ selectedMetric, selectedCountr
     useEffect(() => {
         async function getMetrics() {
             try {
-                const response = await axios.get(`http://mideast-metrics-app-env-1.eba-3yfp6yaq.us-east-1.elasticbeanstalk.com/api/v1/countries?name=${selectedCountry.toLowerCase()}`);
+                const response = await axios.get(`https://mideast-metrics-app-env-1.eba-3yfp6yaq.us-east-1.elasticbeanstalk.com/api/v1/countries?name=${selectedCountry.toLowerCase()}`);
                 if (response.data) {
                     setCountryMetric(response.data);
                 } else {
