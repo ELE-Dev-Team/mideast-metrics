@@ -1,67 +1,70 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from "react-simple-maps";
 import MENA from "../../assets/MENA_.geojson";
+import Controls from "./Controls";
+import CountryForm from "./CountryForm";
 
-function Map({ onSelectCountry, selectedCountry }) {
+export default function Map({ onSelectCountry, selectedCountry, setValidCountries }) {
   const [zoom, setZoom] = useState(1);
-  const [center, setCenter] = useState([20, 6]);
-  const [currentCountry, setCurrentCountry] = useState("");
-
-  function handleFormChange(event) {
-    setCurrentCountry(event.target.value);
-  }
-
-  function handleSubmitClick(event) {
-    event.preventDefault();
-    onSelectCountry(currentCountry);
-    setCurrentCountry("");
-  }
+  const [center, setCenter] = useState([20, 10]);
 
   const onZoomIn = () => {
     if (zoom > 3) return;
-    setZoom(zoom => zoom * 1.2);
+    setZoom((zoom) => zoom * 1.2);
   };
 
   const onZoomOut = () => {
     if (zoom === 1) return;
-    setZoom(zoom => zoom / 1.2);
+    setZoom((zoom) => zoom / 1.2);
   };
 
+  const onRecenter = () => {
+    setCenter([20, 10]);
+    setZoom(1);
+  };
+
+  function getValidCountries() {
+    let countries = [];
+    fetch(MENA)
+      .then((response) => response.json())
+      .then((data) => {
+        data.features.forEach((countryData) => {
+          countries.push(countryData.properties.ADMIN);
+        });
+      });
+    setValidCountries(countries);
+  }
+
+  useEffect(() => {
+    getValidCountries();
+  }, []);
+
   return (
-    <div className="flex flex-col max-h-70 h-auto border rounded-lg border-3 bg-stone-900/70 mt-5 w-8/12"
-      style={{
-        maxHeight: "85svh"
-      }}
-    >
-      <div className="justify-between inline-flex items-center p-2">
-        <div className="flex items-center justify-self-start">
-          <button onClick={onZoomIn} className="border-1 rounded mx-1 px-1.5 text-white">+</button>
-          <button onClick={onZoomOut} className="border-1 rounded mx-1 px-1.5 text-white">-</button>
-        </div>
-        <div className="items-center justify-self-end">
-          <form >
-            <input name="text" onChange={handleFormChange} placeholder="Enter Country Name..." className="outline-none p-1 rounded" />
-            <button type="submit" onClick={handleSubmitClick} className="border-1 rounded ml-2 p-1 text-white">Search</button>
-          </form>
-        </div>
+    <div className="flex flex-col border rounded-lg border-3 bg-stone-900/70 h-full">
+      <div className="flex justify-between items-center p-2">
+        <Controls onZoomIn={onZoomIn} onZoomOut={onZoomOut} onRecenter={onRecenter} />
+        <CountryForm onSelectCountry={onSelectCountry} />
       </div>
-      <div className="justify-self-center overflow-hidden">
+      <div className="flex justify-center items-center flex-grow">
         <ComposableMap
           projection="geoAzimuthalEqualArea"
           projectionConfig={{
-            center: [20, 6],
+            center: [20, 10],
             scale: 500,
           }}
           className="drop-shadow-[0_10px_10px_rgba(0,0,0,0.50)]"
         >
-          <ZoomableGroup center={center} zoom={zoom}
-            translateExtent={[[0, 0], [800, 1000]]}
-            maxZoom={5}
+          <ZoomableGroup
+            center={center}
+            zoom={zoom}
+            translateExtent={[[0, 0], [800, 800]]}
+            maxZoom={1.5}
             onMoveEnd={({ coordinates, zoom }) => {
               setCenter(coordinates);
               setZoom(zoom);
-              console.log(coordinates, zoom)
-            }} >
+              console.log(coordinates, zoom);
+            }}
+          >
             <Geographies geography={MENA}>
               {({ geographies }) =>
                 geographies.map((geo) => {
@@ -83,7 +86,9 @@ function Map({ onSelectCountry, selectedCountry }) {
                           fill: "#4ade80",
                         },
                       }}
-                      onClick={() => { onSelectCountry(geo.properties.ADMIN); }}
+                      onClick={() => {
+                        onSelectCountry(geo.properties.ADMIN);
+                      }}
                     />
                   );
                 })
@@ -95,5 +100,3 @@ function Map({ onSelectCountry, selectedCountry }) {
     </div>
   );
 }
-
-export default Map;
