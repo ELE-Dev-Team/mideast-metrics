@@ -123,9 +123,9 @@ public class CountryDataService {
 
     public List<CountryData> getCountryData(String countryName, Year year) {
         if(year != null) {
-            return countryDataRepo.findByCountryIdCountryNameAndCountryIdYear(countryName, year);
+            return countryDataRepo.findByCountryIdCountryNameAndCountryIdYear(countryName.toLowerCase(), year);
         } else {
-            return countryDataRepo.findByCountryIdCountryName(countryName);
+            return countryDataRepo.findByCountryIdCountryName(countryName.toLowerCase());
         }
     }
 
