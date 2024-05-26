@@ -37,7 +37,7 @@ export default function CountryVsCountryDistribution({ selectedCountry, selected
             try {
                 const responses = await Promise.all(
                     validCountries.map(async (country) => {
-                        const response = await axios.get(`https://mideast-metrics-app-env-1.eba-3yfp6yaq.us-east-1.elasticbeanstalk.com/api/v1/countries?name=${country.toLowerCase()}&year=${currentYear}`);
+                        const response = await axios.get(`https://api.spring93.dev/api/v1/countries?name=${country.toLowerCase()}&year=${currentYear}`);
                         if (response.data.length > 0) {
                             return response.data[0];
                         }
