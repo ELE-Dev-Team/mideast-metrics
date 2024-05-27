@@ -12,7 +12,6 @@ function getSelectedDataDistribution(countryDataDistribution, selectedMetric) {
             });
         }
     });
-    // Sort the dataArray by year in ascending order
     dataArray.sort((a, b) => a.year - b.year);
     return dataArray;
 }
@@ -62,7 +61,7 @@ export default function CountryYearDistribution({ selectedMetric, selectedCountr
     const chartData = getSelectedDataDistribution(countryMetric, selectedMetric);
 
     return (
-        <div className="flex flex-col items-center justify-center h-full">
+        <div className="flex flex-col items-center justify-center w-full">
             <CountryLineChart
                 chartData={chartData}
                 selectedCountry={selectedCountry}

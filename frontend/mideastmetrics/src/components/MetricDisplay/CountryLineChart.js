@@ -4,11 +4,7 @@ import { LineChart } from "@mui/x-charts";
 export default function CountryLineChart({ chartData, selectedCountry, selectedMetric }) {
     return (
         <div
-            className="flex flex-col p-5 bg-slate-50 rounded outline outline-green-600 outline-5 text-white"
-            style={{
-                width: '66vw',
-                height: '70vh'
-            }}>
+            className="flex flex-col p-5 bg-slate-50 rounded outline outline-green-600 outline-5 text-white">
             <div className="flex justify-content-center text-center text-black">
                 {chartData.length !== 0 &&
                     <h1>{(`${selectedCountry}'s ${selectedMetric} from ${chartData[0].year} - ${chartData[chartData.length - 1].year} `).toUpperCase()}</h1>}

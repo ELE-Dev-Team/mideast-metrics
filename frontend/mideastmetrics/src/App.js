@@ -3,11 +3,10 @@ import Map from "./components/Map/Map";
 import "bootstrap/dist/css/bootstrap.min.css";
 import MMNavbar from "./components/MMNavbar/MMNavbar";
 import MENA from "./assets/MENA_.geojson";
-import BackgroundVideoReel from "./components/Background/BackgroundVideoReel";
 import Sidebar from "./components/Sidebar/Sidebar";
 import CountryYearDistribution from "./components/MetricDisplay/CountyYearDistribution";
 import CountryVsCountryDistribution from "./components/MetricDisplay/CountryVsCountryDistribution";
-import { MenuIcon  } from '@heroicons/react/solid';
+import { MenuIcon } from '@heroicons/react/solid';
 
 const valid_metrics = [
   "gdpValue",
@@ -49,14 +48,14 @@ function App() {
 
   useEffect(() => {
     fetch(MENA)
-        .then((response) => response.json())
-        .then((data) => setGeoJsonData(data));
+      .then((response) => response.json())
+      .then((data) => setGeoJsonData(data));
   }, []);
 
   const handleCountrySelect = (country) => {
     if (geoJsonData) {
       const countryFeatures = geoJsonData.features.find(
-          (feature) => feature.properties.ADMIN === country
+        (feature) => feature.properties.ADMIN === country
       );
       if (countryFeatures) {
         setSelectedCountry(countryFeatures.properties.ADMIN);
@@ -71,30 +70,30 @@ function App() {
   }
 
   function renderTab() {
-    switch(currentTab) {
+    switch (currentTab) {
       case 'View Map':
         return (
-            <Map
-                onSelectCountry={handleCountrySelect}
-                selectedCountry={selectedCountry}
-                setValidCountries={setValidCountries}
-            />
+          <Map
+            onSelectCountry={handleCountrySelect}
+            selectedCountry={selectedCountry}
+            setValidCountries={setValidCountries}
+          />
         );
       case 'M2Y':
         return (
-            <CountryYearDistribution
-                selectedMetric={selectedMetric}
-                selectedCountry={selectedCountry}
-                currentYear={currentYear}/>
+          <CountryYearDistribution
+            selectedMetric={selectedMetric}
+            selectedCountry={selectedCountry}
+            currentYear={currentYear} />
         );
       case 'C2C':
         return (
-            <CountryVsCountryDistribution
-                  selectedCountry={selectedCountry}
-                  selectedMetric={selectedMetric}
-                  currentYear={currentYear}
-                  validCountries={validCountries}
-            />
+          <CountryVsCountryDistribution
+            selectedCountry={selectedCountry}
+            selectedMetric={selectedMetric}
+            currentYear={currentYear}
+            validCountries={validCountries}
+          />
         );
       default:
         break;
@@ -102,40 +101,39 @@ function App() {
   }
 
   return (
-      <div className="flex flex-col h-screen">
-        <BackgroundVideoReel/>
-        <MMNavbar/>
-        <div className="flex flex-row flex-grow relative">
-          {isSidebarOpen && (
-              <Sidebar
-                  handleSideBarClick={handleSideBarClick}
-                  currentYear={currentYear}
-                  updateYear={updateYear}
-                  validMetric={valid_metrics}
-                  setSelectedMetric={setSelectedMetric}
-                  isSidebarOpen={isSidebarOpen}
-                  setIsSidebarOpen={setIsSidebarOpen}
-                  selectedMetric={selectedMetric}
-                  selectedCountry={selectedCountry}
-                  selectedISOA2={selectedISOA2}
-                  className="w-1/5 h-full"
-              />
-          )}
-          <div className={`flex flex-grow justify-center items-center bg-gray-900/90 ${isSidebarOpen ? 'w-4/5' : 'w-full'}`}>
-            <div className="w-2/3 h-2/3 max-w-4xl p-4">
-              {renderTab()}
-            </div>
+    <div className="flex flex-col h-screen">
+      <MMNavbar />
+      <div className="flex flex-row flex-grow relative w-full">
+        {isSidebarOpen && (
+          <Sidebar
+            handleSideBarClick={handleSideBarClick}
+            currentYear={currentYear}
+            updateYear={updateYear}
+            validMetric={valid_metrics}
+            setSelectedMetric={setSelectedMetric}
+            isSidebarOpen={isSidebarOpen}
+            setIsSidebarOpen={setIsSidebarOpen}
+            selectedMetric={selectedMetric}
+            selectedCountry={selectedCountry}
+            selectedISOA2={selectedISOA2}
+            className="w-full md:w-1/5 h-full"
+          />
+        )}
+        <div className="flex flex-grow justify-center items-center bg-gray-950">
+          <div className={`w-full h-full max-w-4xl p-4 flex justify-center items-center`}>
+            {renderTab()}
           </div>
-          {!isSidebarOpen && (
-              <button
-                  onClick={() => setIsSidebarOpen(true)}
-                  className="fixed mt-3 left-4 p-2 bg-gray-800 text-white rounded-full shadow-lg transition-transform duration-300 ease-in-out z-50"
-              >
-                <MenuIcon className="h-5 w-5" />
-              </button>
-          )}
         </div>
+        {!isSidebarOpen && (
+          <button
+            onClick={() => setIsSidebarOpen(true)}
+            className="fixed mt-3 left-4 p-2 bg-gray-800 text-white rounded-full shadow-lg transition-transform duration-300 ease-in-out z-50"
+          >
+            <MenuIcon className="h-5 w-5" />
+          </button>
+        )}
       </div>
+    </div>
   );
 }
 

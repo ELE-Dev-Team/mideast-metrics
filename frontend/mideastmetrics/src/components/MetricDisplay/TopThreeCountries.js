@@ -1,11 +1,10 @@
 import React from "react";
 
 export default function TopThreeCountries({ topThreeData, selectedCountryData, showSelectedCountry, selectedMetric, currentYear }) {
-    // Determine the rank of the selected country
     const selectedCountryRank = topThreeData.length + 1;
 
     return (
-        <div className="flex flex-col p-5 mt-4 bg-white rounded-lg shadow-lg text-gray-900 w-2/3 border-2 border-green-600">
+        <div className="flex flex-col p-5 mt-4 bg-white rounded-lg shadow-lg text-gray-900 w-full max-w-5xl mx-auto border-2 border-green-600">
             <div className="text-center mb-6">
                 {topThreeData.length !== 0 && (
                     <h1 className="text-2xl font-semibold">{`Top 3 Countries for ${selectedMetric} in ${currentYear}`.toUpperCase()}</h1>

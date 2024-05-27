@@ -62,20 +62,20 @@ export default function CountryVsCountryDistribution({ selectedCountry, selected
     const showSelectedCountry = selectedCountryData && !isSelectedCountryInTopThree(topThreeData, selectedCountryData);
 
     return (
-        <div className="flex flex-col items-center justify-center h-full">
+        <div className="flex flex-col items-center justify-center w-full">
             <CountryBarChart
                 chartData={chartData}
                 selectedMetric={selectedMetric}
                 currentYear={currentYear}
             />
-            <TopThreeCountries
+            {/* <TopThreeCountries
                 topThreeData={topThreeData}
                 selectedCountryData={selectedCountryData}
                 showSelectedCountry={showSelectedCountry}
                 selectedMetric={selectedMetric}
                 currentYear={currentYear}
                 scaleMoneyPerBillion={scaleMoneyPerBillion}
-            />
+            /> */}
         </div>
     );
 }
