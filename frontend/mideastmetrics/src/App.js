@@ -62,6 +62,7 @@ function App() {
         setSelectedCountry(countryFeatures.properties.ADMIN);
         setSelectedISOA2(countryFeatures.properties.ISO_A2);
         setSelectedISOA3(countryFeatures.properties.ISO_A3);
+        setIsSidebarOpen(true); // Open the sidebar when a country is selected
       }
     }
   };
@@ -132,7 +133,7 @@ function App() {
           />
         </motion.div>
         <motion.div 
-          className={`flex flex-grow justify-center items-center transition-all duration-300 bg-gray-950 ${isSidebarOpen ? 'md:ml-[33.33%] ml-[66.66%]' : 'w-full'}`}
+          className={`flex flex-grow justify-center items-center transition-all duration-300 bg-gray-950 w-full`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
