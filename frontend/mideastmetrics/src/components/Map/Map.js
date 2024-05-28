@@ -40,7 +40,7 @@ export default function Map({ onSelectCountry, selectedCountry, setValidCountrie
   }, []);
 
   return (
-    <div className="flex flex-col border-4 border-green-600 rounded-lg bg-stone-900/70" style={{ width: '80%' }}>
+    <div className="flex flex-col border-4 border-green-600 rounded-lg bg-stone-900/70 w-full max-w-[90vw] md:max-w-[70vw] xl:max-w-[50vw] max-h-[80vh] overflow-hidden">
       <div className="flex flex-col md:flex-row justify-between items-center p-2">
         <Controls onZoomIn={onZoomIn} onZoomOut={onZoomOut} onRecenter={onRecenter} />
         <CountryForm onSelectCountry={onSelectCountry} validCountries={validCountries} />
