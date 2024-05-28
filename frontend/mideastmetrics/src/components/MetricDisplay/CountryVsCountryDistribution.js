@@ -12,19 +12,21 @@ function getSelectedDataDistribution(countryDataDistribution, selectedMetric, ge
     countryDataDistribution.forEach((countryData) => {
         if (countryData) {
             let value = countryData[selectedMetric];
-            if (selectedMetric === 'gdpValue') {
-                value = scaleMoneyPerBillion(value);
+            if (value > 0) { // Only include countries with non-zero values
+                if (selectedMetric === 'gdpValue') {
+                    value = scaleMoneyPerBillion(value);
+                }
+                const countryFeature = geoJsonData.features.find(
+                    (feature) => feature.properties.ADMIN === countryData.countryId.countryName
+                );
+                const isoA2 = countryFeature ? countryFeature.properties.ISO_A2 : '';
+                const countryName = capitalizeWords(countryData.countryId.countryName);
+                dataArray.push({
+                    val: value,
+                    country: countryName,
+                    isoA2: isoA2
+                });
             }
-            const countryFeature = geoJsonData.features.find(
-                (feature) => feature.properties.ADMIN === countryData.countryId.countryName
-            );
-            const isoA2 = countryFeature ? countryFeature.properties.ISO_A2 : '';
-            const countryName = capitalizeWords(countryData.countryId.countryName);
-            dataArray.push({
-                val: value,
-                country: countryName,
-                isoA2: isoA2
-            });
         }
     });
     dataArray.sort((a, b) => a.val - b.val);
@@ -71,7 +73,7 @@ export default function CountryVsCountryDistribution({ selectedCountry, selected
 
     const chartData = getSelectedDataDistribution(countryMetric, selectedMetric, geoJsonData);
     const topThreeData = [...chartData].sort((a, b) => b.val - a.val).slice(0, 3);
-    const bottomThreeData = [...chartData].sort((a, b) => a.val - b.val).filter(item => item.val > 0).slice(0, 3);
+    const bottomThreeData = [...chartData].sort((a, b) => a.val - b.val).slice(0, 3);
     const selectedCountryData = chartData.find(item => item.country === selectedCountry);
     const statistics = calculateStatistics(chartData);
 
@@ -89,19 +91,19 @@ export default function CountryVsCountryDistribution({ selectedCountry, selected
                 chartData={chartData}
                 selectedMetric={selectedMetric}
             />
-                                        <TopThreeCountries
-                    topThreeData={topThreeData}
-                    selectedCountryData={selectedCountryData}
-                    selectedMetric={selectedMetric}
-                    currentYear={currentYear}
-                />
-                                <BottomThreeCountries
-                    bottomThreeData={bottomThreeData}
-                    selectedCountryData={selectedCountryData}
-                    selectedMetric={selectedMetric}
-                    currentYear={currentYear}
-                    totalCountries={chartData.length}
-                />
+            <TopThreeCountries
+                topThreeData={topThreeData}
+                selectedCountryData={selectedCountryData}
+                selectedMetric={selectedMetric}
+                currentYear={currentYear}
+            />
+            <BottomThreeCountries
+                bottomThreeData={bottomThreeData}
+                selectedCountryData={selectedCountryData}
+                selectedMetric={selectedMetric}
+                currentYear={currentYear}
+                totalCountries={chartData.length}
+            />
             <MetricStatistics
                 statistics={statistics}
                 selectedMetric={selectedMetric}

@@ -24,9 +24,8 @@ export default function CountryBarChart({ chartData, selectedMetric, currentYear
                     data: chartData.map(item => item.country),
                     label: 'Country',
                     scaleType: 'band',
-                    color: '#fff'
                 }]}
-                margin={{ top: 10, bottom: 70, left: 70, right: 10 }}
+                margin={{ top: 10, bottom: 120, left: 70, right: 10 }}
                 colors={['#4ade80']}
                 style={{ color: '#fff' }}
             />

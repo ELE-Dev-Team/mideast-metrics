@@ -37,6 +37,8 @@ code {
 .MuiChartsAxis-directionX .MuiChartsAxis-tickLabel {
   text-anchor: end;
   fill: #ffffff !important;
+  font-size: 15px !important;
+  transform: rotate(-45deg) translateY(10px);
 }
 
 .MuiChartsAxis-directionX .MuiChartsAxis-label {
@@ -55,7 +57,7 @@ code {
 
 @media (max-width: 768px) {
   .MuiChartsAxis-directionX .MuiChartsAxis-tickLabel {
-    font-size: 10px;
+    font-size: 8px;
   }
 
   .MuiChartsAxis-directionX .MuiChartsAxis-label {
@@ -63,13 +65,13 @@ code {
   }
 
   .MuiChartsAxis-directionY .MuiChartsAxis-label {
-    transform: translateX(-0px);
+    transform: translateX(0px);
   }
 }
 
 @media (max-width: 480px) {
   .MuiChartsAxis-directionX .MuiChartsAxis-tickLabel {
-    font-size: 10px !important;
+    font-size: 2px !important;
   }
 
   .MuiChartsAxis-directionX .MuiChartsAxis-label {
