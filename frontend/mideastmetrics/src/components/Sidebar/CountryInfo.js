@@ -6,13 +6,12 @@ export default function CountryInfo({ selectedCountry, selectedISOA2 }) {
         <div className="mb-4">
             <p className="mt-4 text-lg font-bold flex items-center">
                 Selected Country: {selectedCountry ? (
-                <>
-                    {selectedCountry}
-                    <span className={`fi fi-${selectedISOA2.toLowerCase()} ml-2`}/>
-                </>
-            ) : "None"}
+                    <>
+                        {selectedCountry}
+                        <span className={`fi fi-${selectedISOA2.toLowerCase()} ml-2`} />
+                    </>
+                ) : "None"}
             </p>
         </div>
     );
 };
-

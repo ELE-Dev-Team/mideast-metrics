@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { motion } from 'framer-motion';
 import Map from "./components/Map/Map";
 import "bootstrap/dist/css/bootstrap.min.css";
 import MMNavbar from "./components/MMNavbar/MMNavbar";
@@ -36,11 +37,11 @@ function App() {
   const [selectedISOA2, setSelectedISOA2] = useState(null);
   const [selectedISOA3, setSelectedISOA3] = useState(null);
   const [geoJsonData, setGeoJsonData] = useState(null);
-  const [validCountries, setValidCountries] = useState(null);
+  const [validCountries, setValidCountries] = useState([]);
   const [selectedMetric, setSelectedMetric] = useState(valid_metrics ? valid_metrics[0] : null);
   const [currentTab, setCurrentTab] = useState('View Map');
   const [currentYear, setCurrentYear] = useState(2022);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const updateYear = (increment) => () => {
     setCurrentYear(currentYear + (increment ? 1 : -1));
@@ -77,6 +78,8 @@ function App() {
             onSelectCountry={handleCountrySelect}
             selectedCountry={selectedCountry}
             setValidCountries={setValidCountries}
+            validCountries={validCountries}
+            className="w-full h-full"
           />
         );
       case 'M2Y':
@@ -84,7 +87,8 @@ function App() {
           <CountryYearDistribution
             selectedMetric={selectedMetric}
             selectedCountry={selectedCountry}
-            currentYear={currentYear} />
+            currentYear={currentYear}
+            className="w-full h-full" />
         );
       case 'C2C':
         return (
@@ -93,6 +97,8 @@ function App() {
             selectedMetric={selectedMetric}
             currentYear={currentYear}
             validCountries={validCountries}
+            geoJsonData={geoJsonData}
+            className="w-full h-full"
           />
         );
       default:
@@ -100,11 +106,18 @@ function App() {
     }
   }
 
+  const isMobile = window.innerWidth <= 768;
+
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col min-h-screen bg-gray-950">
       <MMNavbar />
-      <div className="flex flex-row flex-grow relative w-full">
-        {isSidebarOpen && (
+      <div className="flex flex-row flex-grow w-full pt-16 bg-gray-950">
+        <motion.div 
+          className="fixed md:w-1/3 w-8/12 h-full z-40"
+          initial={{ x: '-100%' }}
+          animate={{ x: isSidebarOpen ? 0 : '-100%' }}
+          transition={{ type: 'tween', duration: 0.3 }}
+        >
           <Sidebar
             handleSideBarClick={handleSideBarClick}
             currentYear={currentYear}
@@ -116,18 +129,22 @@ function App() {
             selectedMetric={selectedMetric}
             selectedCountry={selectedCountry}
             selectedISOA2={selectedISOA2}
-            className="w-full md:w-1/5 h-full"
           />
-        )}
-        <div className="flex flex-grow justify-center items-center bg-gray-950">
-          <div className={`w-full h-full max-w-4xl p-4 flex justify-center items-center`}>
+        </motion.div>
+        <motion.div 
+          className={`flex flex-grow justify-center items-center transition-all duration-300 bg-gray-950 ${isSidebarOpen ? 'md:ml-[33.33%] ml-[66.66%]' : 'w-full'}`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="p-4 flex justify-center items-center w-full mt-6 bg-gray-950">
             {renderTab()}
           </div>
-        </div>
+        </motion.div>
         {!isSidebarOpen && (
           <button
             onClick={() => setIsSidebarOpen(true)}
-            className="fixed mt-3 left-4 p-2 bg-gray-800 text-white rounded-full shadow-lg transition-transform duration-300 ease-in-out z-50"
+            className="fixed top-4 left-4 p-2 bg-gray-800 text-white rounded-full shadow-lg transition-transform duration-300 ease-in-out z-50"
           >
             <MenuIcon className="h-5 w-5" />
           </button>

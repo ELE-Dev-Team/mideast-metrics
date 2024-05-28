@@ -10,13 +10,13 @@ export default function YearSelector({ currentYear, updateYear }) {
                     onClick={updateYear(true)} disabled={currentYear === 2022}
                     className="flex items-center justify-center border border-gray-500 rounded h-8 w-8 leading-none hover:bg-gray-600 disabled:opacity-50 transition duration-200"
                 >
-                    <ChevronUpIcon className="h-5 w-5 text-white"/>
+                    <ChevronUpIcon className="h-5 w-5 text-white" />
                 </button>
                 <button
                     onClick={updateYear(false)} disabled={currentYear === 1981}
                     className="flex items-center justify-center border border-gray-500 rounded h-8 w-8 leading-none hover:bg-gray-600 disabled:opacity-50 transition duration-200"
                 >
-                    <ChevronDownIcon className="h-5 w-5 text-white"/>
+                    <ChevronDownIcon className="h-5 w-5 text-white" />
                 </button>
             </div>
         </div>

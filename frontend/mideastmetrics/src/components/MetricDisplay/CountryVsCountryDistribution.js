@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import CountryBarChart from "./CountryBarChart";
+import CountryPieChart from "./CountryPieChart";
 import TopThreeCountries from "./TopThreeCountries";
 
-function getSelectedDataDistribution(countryDataDistribution, selectedMetric) {
+function getSelectedDataDistribution(countryDataDistribution, selectedMetric, geoJsonData) {
     let dataArray = [];
     countryDataDistribution.forEach((countryData) => {
         if (countryData) {
@@ -11,14 +12,24 @@ function getSelectedDataDistribution(countryDataDistribution, selectedMetric) {
             if (selectedMetric === 'gdpValue') {
                 value = scaleMoneyPerBillion(value);
             }
+            const countryFeature = geoJsonData.features.find(
+                (feature) => feature.properties.ADMIN === countryData.countryId.countryName
+            );
+            const isoA2 = countryFeature ? countryFeature.properties.ISO_A2 : '';
+            const countryName = capitalizeWords(countryData.countryId.countryName);
             dataArray.push({
                 val: value,
-                country: countryData.countryId.countryName
+                country: countryName,
+                isoA2: isoA2
             });
         }
     });
     dataArray.sort((a, b) => a.val - b.val);
     return dataArray;
+}
+
+function capitalizeWords(string) {
+    return string.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
 }
 
 function scaleMoneyPerBillion(moneyVal) {
@@ -29,7 +40,7 @@ function isSelectedCountryInTopThree(topThreeData, selectedCountryData) {
     return topThreeData.some(item => item.country === selectedCountryData.country);
 }
 
-export default function CountryVsCountryDistribution({ selectedCountry, selectedMetric, currentYear, validCountries }) {
+export default function CountryVsCountryDistribution({ selectedCountry, selectedMetric, currentYear, validCountries, geoJsonData }) {
     const [countryMetric, setCountryMetric] = useState([]);
 
     useEffect(() => {
@@ -43,11 +54,7 @@ export default function CountryVsCountryDistribution({ selectedCountry, selected
                         }
                     })
                 );
-                if (responses.length !== 0) {
-                    setCountryMetric(responses);
-                } else {
-                    console.log("Response is empty.");
-                }
+                setCountryMetric(responses.filter(Boolean));
             } catch (err) {
                 console.log(err);
             }
@@ -55,27 +62,33 @@ export default function CountryVsCountryDistribution({ selectedCountry, selected
         getMetrics();
     }, [currentYear, validCountries]);
 
-    const chartData = getSelectedDataDistribution(countryMetric, selectedMetric);
+    const chartData = getSelectedDataDistribution(countryMetric, selectedMetric, geoJsonData);
     const topThreeData = [...chartData].sort((a, b) => b.val - a.val).slice(0, 3);
     const selectedCountryData = chartData.find(item => item.country === selectedCountry);
 
     const showSelectedCountry = selectedCountryData && !isSelectedCountryInTopThree(topThreeData, selectedCountryData);
 
     return (
-        <div className="flex flex-col items-center justify-center w-full">
+        <div className="flex flex-col items-center justify-center w-full space-y-8">
             <CountryBarChart
                 chartData={chartData}
                 selectedMetric={selectedMetric}
                 currentYear={currentYear}
             />
-            {/* <TopThreeCountries
-                topThreeData={topThreeData}
-                selectedCountryData={selectedCountryData}
-                showSelectedCountry={showSelectedCountry}
+            <CountryPieChart
+                chartData={chartData}
                 selectedMetric={selectedMetric}
-                currentYear={currentYear}
-                scaleMoneyPerBillion={scaleMoneyPerBillion}
-            /> */}
+            />
+            {showSelectedCountry && (
+                <TopThreeCountries
+                    topThreeData={topThreeData}
+                    selectedCountryData={selectedCountryData}
+                    showSelectedCountry={showSelectedCountry}
+                    selectedMetric={selectedMetric}
+                    currentYear={currentYear}
+                    scaleMoneyPerBillion={scaleMoneyPerBillion}
+                />
+            )}
         </div>
     );
 }

@@ -4,21 +4,31 @@ import { BarChart } from "@mui/x-charts";
 export default function CountryBarChart({ chartData, selectedMetric, currentYear }) {
     return (
         <div
-            className="flex flex-col p-5 bg-slate-50 rounded outline outline-green-600 outline-5 text-white">
-            <div className="flex justify-center text-center text-black">
+            className="flex flex-col p-5 mt-4 bg-gray-800 rounded-lg shadow-lg text-white w-full max-w-5xl mx-auto border-2 border-green-600"
+            style={{
+                height: '70vh',
+                marginTop: '30px'
+            }}>
+            <div className="flex justify-center text-center mb-4">
                 {chartData.length !== 0 &&
-                    <h1>{(`Rankings for ${selectedMetric} in ${currentYear}`).toUpperCase()}</h1>}
+                    <h1 className="text-2xl font-semibold">{(`Rankings for ${selectedMetric} in ${currentYear}`).toUpperCase()}</h1>}
             </div>
-            <hr />
+            <hr className="mb-4 border-gray-600" />
             <BarChart
                 series={[
                     { data: chartData.map(item => item.val) },
                 ]}
                 grid={{ vertical: true, horizontal: true }}
-                yAxis={[{ label: `${selectedMetric}` }]}
-                xAxis={[{ data: chartData.map(item => item.country), label: 'Country', scaleType: 'band' }]}
+                yAxis={[{ label: `${selectedMetric}`, color: '#fff' }]}
+                xAxis={[{
+                    data: chartData.map(item => item.country),
+                    label: 'Country',
+                    scaleType: 'band',
+                    color: '#fff'
+                }]}
                 margin={{ top: 10, bottom: 70, left: 70, right: 10 }}
-                colors={['#365314']}
+                colors={['#4ade80']}
+                style={{ color: '#fff' }}
             />
         </div>
     );

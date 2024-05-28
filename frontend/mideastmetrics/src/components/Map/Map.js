@@ -4,7 +4,7 @@ import MENA from "../../assets/MENA_.geojson";
 import Controls from "./Controls";
 import CountryForm from "./CountryForm";
 
-export default function Map({ onSelectCountry, selectedCountry, setValidCountries }) {
+export default function Map({ onSelectCountry, selectedCountry, setValidCountries, validCountries }) {
   const [zoom, setZoom] = useState(1);
   const [center, setCenter] = useState([20, 10]);
 
@@ -31,8 +31,8 @@ export default function Map({ onSelectCountry, selectedCountry, setValidCountrie
         data.features.forEach((countryData) => {
           countries.push(countryData.properties.ADMIN);
         });
+        setValidCountries(countries);
       });
-    setValidCountries(countries);
   }
 
   useEffect(() => {
@@ -40,19 +40,16 @@ export default function Map({ onSelectCountry, selectedCountry, setValidCountrie
   }, []);
 
   return (
-    <div className="flex flex-col border rounded-lg border-3 bg-stone-900/70 h-full">
+    <div className="flex flex-col border rounded-lg border-3 bg-stone-900/70" style={{ width: '80%' }}>
       <div className="flex flex-col md:flex-row justify-between items-center p-2">
         <Controls onZoomIn={onZoomIn} onZoomOut={onZoomOut} onRecenter={onRecenter} />
-        <CountryForm onSelectCountry={onSelectCountry} />
+        <CountryForm onSelectCountry={onSelectCountry} validCountries={validCountries} />
       </div>
       <div className="flex justify-center items-center flex-grow">
         <div className="w-full h-full">
           <ComposableMap
             projection="geoAzimuthalEqualArea"
-            projectionConfig={{
-              center: [20, 10],
-              scale: 500,
-            }}
+            projectionConfig={{ center: [20, 10], scale: 500 }}
             className="drop-shadow-[0_10px_10px_rgba(0,0,0,0.50)] w-full h-full"
           >
             <ZoomableGroup
@@ -75,20 +72,11 @@ export default function Map({ onSelectCountry, selectedCountry, setValidCountrie
                         geography={geo}
                         className="outline-none"
                         style={{
-                          default: {
-                            fill: isSelected ? "#16a34a" : "#15803d",
-                            stroke: "#4ade80",
-                          },
-                          hover: {
-                            fill: "#16a34a",
-                          },
-                          pressed: {
-                            fill: "#4ade80",
-                          },
+                          default: { fill: isSelected ? "#16a34a" : "#15803d", stroke: "#4ade80" },
+                          hover: { fill: "#16a34a" },
+                          pressed: { fill: "#4ade80" },
                         }}
-                        onClick={() => {
-                          onSelectCountry(geo.properties.ADMIN);
-                        }}
+                        onClick={() => onSelectCountry(geo.properties.ADMIN)}
                       />
                     );
                   })
