@@ -3,6 +3,9 @@ import axios from "axios";
 import CountryBarChart from "./CountryBarChart";
 import CountryPieChart from "./CountryPieChart";
 import TopThreeCountries from "./TopThreeCountries";
+import BottomThreeCountries from "./BottomThreeCountries";
+import MetricStatistics from "./MetricStatistics";
+import { calculateStatistics } from "./statisticsUtils"; // Assuming the utility functions are in statisticsUtils.js
 
 function getSelectedDataDistribution(countryDataDistribution, selectedMetric, geoJsonData) {
     let dataArray = [];
@@ -40,6 +43,10 @@ function isSelectedCountryInTopThree(topThreeData, selectedCountryData) {
     return topThreeData.some(item => item.country === selectedCountryData.country);
 }
 
+function isSelectedCountryInBottomThree(bottomThreeData, selectedCountryData) {
+    return bottomThreeData.some(item => item.country === selectedCountryData.country);
+}
+
 export default function CountryVsCountryDistribution({ selectedCountry, selectedMetric, currentYear, validCountries, geoJsonData }) {
     const [countryMetric, setCountryMetric] = useState([]);
 
@@ -64,9 +71,12 @@ export default function CountryVsCountryDistribution({ selectedCountry, selected
 
     const chartData = getSelectedDataDistribution(countryMetric, selectedMetric, geoJsonData);
     const topThreeData = [...chartData].sort((a, b) => b.val - a.val).slice(0, 3);
+    const bottomThreeData = [...chartData].sort((a, b) => a.val - b.val).filter(item => item.val > 0).slice(0, 3);
     const selectedCountryData = chartData.find(item => item.country === selectedCountry);
+    const statistics = calculateStatistics(chartData);
 
-    const showSelectedCountry = selectedCountryData && !isSelectedCountryInTopThree(topThreeData, selectedCountryData);
+    const showSelectedCountryInTop = selectedCountryData && !isSelectedCountryInTopThree(topThreeData, selectedCountryData);
+    const showSelectedCountryInBottom = selectedCountryData && !isSelectedCountryInBottomThree(bottomThreeData, selectedCountryData);
 
     return (
         <div className="flex flex-col items-center justify-center w-full space-y-8">
@@ -79,16 +89,24 @@ export default function CountryVsCountryDistribution({ selectedCountry, selected
                 chartData={chartData}
                 selectedMetric={selectedMetric}
             />
-            {showSelectedCountry && (
-                <TopThreeCountries
+                                        <TopThreeCountries
                     topThreeData={topThreeData}
                     selectedCountryData={selectedCountryData}
-                    showSelectedCountry={showSelectedCountry}
                     selectedMetric={selectedMetric}
                     currentYear={currentYear}
-                    scaleMoneyPerBillion={scaleMoneyPerBillion}
                 />
-            )}
+                                <BottomThreeCountries
+                    bottomThreeData={bottomThreeData}
+                    selectedCountryData={selectedCountryData}
+                    selectedMetric={selectedMetric}
+                    currentYear={currentYear}
+                    totalCountries={chartData.length}
+                />
+            <MetricStatistics
+                statistics={statistics}
+                selectedMetric={selectedMetric}
+                currentYear={currentYear}
+            />
         </div>
     );
 }

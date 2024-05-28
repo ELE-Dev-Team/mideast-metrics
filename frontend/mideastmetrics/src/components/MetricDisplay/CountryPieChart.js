@@ -36,7 +36,7 @@ export default function CountryPieChart({ chartData, selectedMetric }) {
 
     return (
         <div
-            className="flex flex-col p-5 mt-4 bg-gray-800 rounded-lg shadow-lg text-white w-full max-w-5xl mx-auto border-2 border-green-600"
+            className="flex flex-col p-5 mt-4 bg-gray-800 rounded-lg shadow-lg text-white w-full max-w-5xl mx-auto border-4 border-green-600"
             style={{
                 height: '70vh',
                 marginTop: '30px'

@@ -36,14 +36,21 @@ code {
 
 .MuiChartsAxis-directionX .MuiChartsAxis-tickLabel {
   text-anchor: end;
+  fill: #ffffff !important;
 }
 
 .MuiChartsAxis-directionX .MuiChartsAxis-label {
   transform: translateY(30px);
+  fill: #ffffff !important;
+}
+
+.MuiChartsAxis-directionY .MuiChartsAxis-tickLabel {
+  fill: #ffffff !important;
 }
 
 .MuiChartsAxis-directionY .MuiChartsAxis-label {
   transform: translateX(-20px);
+  fill: #ffffff !important;
 }
 
 @media (max-width: 768px) {
@@ -57,11 +64,6 @@ code {
 
   .MuiChartsAxis-directionY .MuiChartsAxis-label {
     transform: translateX(-0px);
-  }
-
-  .sidebar-content {
-    word-wrap: break-word;
-    white-space: normal;
   }
 }
 
@@ -77,10 +79,8 @@ code {
   .MuiChartsAxis-directionY .MuiChartsAxis-label {
     transform: translateX(-25px);
   }
+}
 
-  .sidebar-content {
-    word-wrap: break-word;
-    white-space: normal;
-    font-size: 14px;
-  }
+body {
+  background-color: #111827; /* Equivalent to bg-gray-950 */
 }
