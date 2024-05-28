@@ -5,14 +5,14 @@ import CountryPieChart from "./CountryPieChart";
 import TopThreeCountries from "./TopThreeCountries";
 import BottomThreeCountries from "./BottomThreeCountries";
 import MetricStatistics from "./MetricStatistics";
-import { calculateStatistics } from "./statisticsUtils"; // Assuming the utility functions are in statisticsUtils.js
+import { calculateStatistics } from "./statisticsUtils";
 
 function getSelectedDataDistribution(countryDataDistribution, selectedMetric, geoJsonData) {
     let dataArray = [];
     countryDataDistribution.forEach((countryData) => {
         if (countryData) {
             let value = countryData[selectedMetric];
-            if (value > 0) { // Only include countries with non-zero values
+            if (value > 0) {
                 if (selectedMetric === 'gdpValue') {
                     value = scaleMoneyPerBillion(value);
                 }
@@ -63,7 +63,9 @@ export default function CountryVsCountryDistribution({ selectedCountry, selected
                         }
                     })
                 );
-                setCountryMetric(responses.filter(Boolean));
+
+                const uniqueResponses = Array.from(new Map(responses.filter(Boolean).map(item => [item.countryId.countryName, item])).values());
+                setCountryMetric(uniqueResponses);
             } catch (err) {
                 console.log(err);
             }
