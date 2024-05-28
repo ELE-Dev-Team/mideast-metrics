@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import Map from "./components/Map/Map";
 import "bootstrap/dist/css/bootstrap.min.css";
 import MMNavbar from "./components/MMNavbar/MMNavbar";
-import MENA from "./assets/MENA_.geojson";
+import MENA from "./components/Map/mideast.geojson";
 import Sidebar from "./components/Sidebar/Sidebar";
 import CountryYearDistribution from "./components/MetricDisplay/CountyYearDistribution";
 import CountryVsCountryDistribution from "./components/MetricDisplay/CountryVsCountryDistribution";

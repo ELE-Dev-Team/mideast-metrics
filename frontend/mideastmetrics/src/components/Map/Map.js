@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from "react-simple-maps";
-import MENA from "../../assets/MENA_.geojson";
+import MENA from "./mideast.geojson";
 import Controls from "./Controls";
 import CountryForm from "./CountryForm";
 
