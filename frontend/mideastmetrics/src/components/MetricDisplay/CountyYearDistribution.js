@@ -45,7 +45,7 @@ export default function CountryYearDistribution({ selectedMetric, selectedCountr
     useEffect(() => {
         async function getMetrics() {
             try {
-                const response = await axios.get(`https://api.spring93.dev/api/v1/countries?name=${selectedCountry.toLowerCase()}`);
+                const response = await axios.get(`https://mideast-metrics.delightfulglacier-fb9bf0e7.eastus.azurecontainerapps.io/api/v1/countries?name=${selectedCountry.toLowerCase()}`);
                 setCountryMetric(response.data || []);
             } catch (err) {
                 console.log(err);

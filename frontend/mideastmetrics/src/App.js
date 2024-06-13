@@ -62,7 +62,7 @@ function App() {
         setSelectedCountry(countryFeatures.properties.ADMIN);
         setSelectedISOA2(countryFeatures.properties.ISO_A2);
         setSelectedISOA3(countryFeatures.properties.ISO_A3);
-        setIsSidebarOpen(true); // Open the sidebar when a country is selected
+        setIsSidebarOpen(true);
       }
     }
   };
