@@ -57,7 +57,7 @@ export default function CountryVsCountryDistribution({ selectedCountry, selected
             try {
                 const responses = await Promise.all(
                     validCountries.map(async (country) => {
-                        const response = await axios.get(`https://mideast-metrics.delightfulglacier-fb9bf0e7.eastus.azurecontainerapps.io/countries?name=${country.toLowerCase()}&year=${currentYear}`);
+                        const response = await axios.get(`https://mideast-metrics.delightfulglacier-fb9bf0e7.eastus.azurecontainerapps.io/api/v1/countries?name=${encodeURIComponent(country.toLowerCase())}&year=${currentYear}`);
                         if (response.data.length > 0) {
                             return response.data[0];
                         }
@@ -72,6 +72,8 @@ export default function CountryVsCountryDistribution({ selectedCountry, selected
         }
         getMetrics();
     }, [currentYear, validCountries]);
+
+
 
     const chartData = getSelectedDataDistribution(countryMetric, selectedMetric, geoJsonData);
     const topThreeData = [...chartData].sort((a, b) => b.val - a.val).slice(0, 3);

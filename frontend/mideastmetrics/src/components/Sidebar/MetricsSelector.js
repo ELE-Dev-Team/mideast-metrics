@@ -11,7 +11,7 @@ export default function MetricsSelector({ validMetric, selectedMetric, setSelect
                 {selectedMetric ? selectedMetric.toUpperCase() : "Select Metric"}
             </button>
             {isMetricsOpen && (
-                <div className="mt-2 bg-gray-800 rounded shadow-lg max-h-40 overflow-y-auto">
+                <div className="mt-2 bg-gray-800 rounded shadow-lg max-h-40 overflow-y-auto p-2" style={{ maxWidth: '90vw' }}>
                     <ul className="space-y-1">
                         {validMetric.map((metric) => (
                             <li
