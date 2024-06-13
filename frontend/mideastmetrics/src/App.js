@@ -35,7 +35,6 @@ const valid_metrics = [
 function App() {
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [selectedISOA2, setSelectedISOA2] = useState(null);
-  const [selectedISOA3, setSelectedISOA3] = useState(null);
   const [geoJsonData, setGeoJsonData] = useState(null);
   const [validCountries, setValidCountries] = useState([]);
   const [selectedMetric, setSelectedMetric] = useState(valid_metrics ? valid_metrics[0] : null);
@@ -61,7 +60,6 @@ function App() {
       if (countryFeatures) {
         setSelectedCountry(countryFeatures.properties.ADMIN);
         setSelectedISOA2(countryFeatures.properties.ISO_A2);
-        setSelectedISOA3(countryFeatures.properties.ISO_A3);
         setIsSidebarOpen(true);
       }
     }
@@ -106,8 +104,6 @@ function App() {
         break;
     }
   }
-
-  const isMobile = window.innerWidth <= 768;
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-950">

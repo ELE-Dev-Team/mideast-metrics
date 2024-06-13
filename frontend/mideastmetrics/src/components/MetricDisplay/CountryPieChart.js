@@ -1,5 +1,5 @@
 import React from "react";
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Sector } from "recharts";
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import 'flag-icons/css/flag-icons.min.css';
 
 const COLORS = ['#006400', '#228B22', '#32CD32', '#3CB371', '#2E8B57', '#66CDAA', '#8FBC8F', '#20B2AA'];

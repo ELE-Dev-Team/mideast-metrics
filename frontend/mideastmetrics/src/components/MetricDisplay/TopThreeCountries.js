@@ -1,7 +1,6 @@
 import React from "react";
 
 export default function TopThreeCountries({ topThreeData, selectedCountryData, showSelectedCountry, selectedMetric, currentYear }) {
-    const selectedCountryRank = topThreeData.length + 1;
 
     return (
         <div className="flex flex-col p-5 mt-4 bg-gray-800 rounded-lg shadow-lg text-white w-full max-w-5xl mx-auto border-4 border-green-600">

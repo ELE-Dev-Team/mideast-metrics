@@ -23,69 +23,68 @@ export default function Map({ onSelectCountry, selectedCountry, setValidCountrie
     setZoom(1);
   };
 
-  function getValidCountries() {
-    let countries = [];
-    fetch(MENA)
-      .then((response) => response.json())
-      .then((data) => {
-        data.features.forEach((countryData) => {
-          countries.push(countryData.properties.ADMIN);
-        });
-        setValidCountries(countries);
-      });
-  }
-
   useEffect(() => {
+    function getValidCountries() {
+      let countries = [];
+      fetch(MENA)
+          .then((response) => response.json())
+          .then((data) => {
+            data.features.forEach((countryData) => {
+              countries.push(countryData.properties.ADMIN);
+            });
+            setValidCountries(countries);
+          });
+    }
     getValidCountries();
-  }, []);
+  }, [setValidCountries]);
 
   return (
-    <div className="flex flex-col border-4 border-green-600 rounded-lg bg-stone-900/70 w-full max-w-[90vw] md:max-w-[70vw] xl:max-w-[50vw] max-h-[80vh] overflow-hidden">
-      <div className="flex flex-col md:flex-row justify-between items-center p-2">
-        <Controls onZoomIn={onZoomIn} onZoomOut={onZoomOut} onRecenter={onRecenter} />
-        <CountryForm onSelectCountry={onSelectCountry} validCountries={validCountries} />
-      </div>
-      <div className="flex justify-center items-center flex-grow">
-        <div className="w-full h-full">
-          <ComposableMap
-            projection="geoAzimuthalEqualArea"
-            projectionConfig={{ center: [20, 10], scale: 500 }}
-            className="drop-shadow-[0_10px_10px_rgba(0,0,0,0.50)] w-full h-full"
-          >
-            <ZoomableGroup
-              center={center}
-              zoom={zoom}
-              translateExtent={[[0, 0], [800, 800]]}
-              maxZoom={1.5}
-              onMoveEnd={({ coordinates, zoom }) => {
-                setCenter(coordinates);
-                setZoom(zoom);
-              }}
+      <div className="flex flex-col border-4 border-green-600 rounded-lg bg-stone-900/70 w-full max-w-[90vw] md:max-w-[70vw] xl:max-w-[50vw] max-h-[80vh] overflow-hidden">
+        <div className="flex flex-col md:flex-row justify-between items-center p-2">
+          <Controls onZoomIn={onZoomIn} onZoomOut={onZoomOut} onRecenter={onRecenter} />
+          <CountryForm onSelectCountry={onSelectCountry} validCountries={validCountries} />
+        </div>
+        <div className="flex justify-center items-center flex-grow">
+          <div className="w-full h-full">
+            <ComposableMap
+                projection="geoAzimuthalEqualArea"
+                projectionConfig={{ center: [20, 10], scale: 500 }}
+                className="drop-shadow-[0_10px_10px_rgba(0,0,0,0.50)] w-full h-full"
             >
-              <Geographies geography={MENA}>
-                {({ geographies }) =>
-                  geographies.map((geo) => {
-                    const isSelected = geo.properties.ADMIN === selectedCountry;
-                    return (
-                      <Geography
-                        key={geo.rsmKey}
-                        geography={geo}
-                        className="outline-none"
-                        style={{
-                          default: { fill: isSelected ? "#16a34a" : "#15803d", stroke: "#4ade80" },
-                          hover: { fill: "#16a34a" },
-                          pressed: { fill: "#4ade80" },
-                        }}
-                        onClick={() => onSelectCountry(geo.properties.ADMIN)}
-                      />
-                    );
-                  })
-                }
-              </Geographies>
-            </ZoomableGroup>
-          </ComposableMap>
+              <ZoomableGroup
+                  center={center}
+                  zoom={zoom}
+                  translateExtent={[[0, 0], [800, 800]]}
+                  maxZoom={1.5}
+                  onMoveEnd={({ coordinates, zoom }) => {
+                    setCenter(coordinates);
+                    setZoom(zoom);
+                  }}
+              >
+                <Geographies geography={MENA}>
+                  {({ geographies }) =>
+                      geographies.map((geo) => {
+                        const isSelected = geo.properties.ADMIN === selectedCountry;
+                        return (
+                            <Geography
+                                key={geo.rsmKey}
+                                geography={geo}
+                                className="outline-none"
+                                style={{
+                                  default: { fill: isSelected ? "#16a34a" : "#15803d", stroke: "#4ade80" },
+                                  hover: { fill: "#16a34a" },
+                                  pressed: { fill: "#4ade80" },
+                                }}
+                                onClick={() => onSelectCountry(geo.properties.ADMIN)}
+                            />
+                        );
+                      })
+                  }
+                </Geographies>
+              </ZoomableGroup>
+            </ComposableMap>
+          </div>
         </div>
       </div>
-    </div>
   );
 }

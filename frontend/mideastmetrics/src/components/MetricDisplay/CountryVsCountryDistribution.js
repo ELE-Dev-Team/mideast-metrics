@@ -41,14 +41,6 @@ function scaleMoneyPerBillion(moneyVal) {
     return (moneyVal / 1e9).toFixed(2);
 }
 
-function isSelectedCountryInTopThree(topThreeData, selectedCountryData) {
-    return topThreeData.some(item => item.country === selectedCountryData.country);
-}
-
-function isSelectedCountryInBottomThree(bottomThreeData, selectedCountryData) {
-    return bottomThreeData.some(item => item.country === selectedCountryData.country);
-}
-
 export default function CountryVsCountryDistribution({ selectedCountry, selectedMetric, currentYear, validCountries, geoJsonData }) {
     const [countryMetric, setCountryMetric] = useState([]);
 
@@ -80,9 +72,6 @@ export default function CountryVsCountryDistribution({ selectedCountry, selected
     const bottomThreeData = [...chartData].sort((a, b) => a.val - b.val).slice(0, 3);
     const selectedCountryData = chartData.find(item => item.country === selectedCountry);
     const statistics = calculateStatistics(chartData);
-
-    const showSelectedCountryInTop = selectedCountryData && !isSelectedCountryInTopThree(topThreeData, selectedCountryData);
-    const showSelectedCountryInBottom = selectedCountryData && !isSelectedCountryInBottomThree(bottomThreeData, selectedCountryData);
 
     return (
         <div className="flex flex-col items-center justify-center w-full space-y-8">
