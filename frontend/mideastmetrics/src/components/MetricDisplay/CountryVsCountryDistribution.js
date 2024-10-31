@@ -6,6 +6,7 @@ import TopThreeCountries from "./TopThreeCountries";
 import BottomThreeCountries from "./BottomThreeCountries";
 import MetricStatistics from "./MetricStatistics";
 import { calculateStatistics } from "./statisticsUtils";
+import { supabase } from "../../supabaseClient";
 
 function getSelectedDataDistribution(countryDataDistribution, selectedMetric, geoJsonData) {
     let dataArray = [];
@@ -17,10 +18,10 @@ function getSelectedDataDistribution(countryDataDistribution, selectedMetric, ge
                     value = scaleMoneyPerBillion(value);
                 }
                 const countryFeature = geoJsonData.features.find(
-                    (feature) => feature.properties.ADMIN === countryData.countryId.countryName
+                    (feature) => feature.properties.ADMIN === countryData.country_name
                 );
                 const isoA2 = countryFeature ? countryFeature.properties.ISO_A2 : '';
-                const countryName = capitalizeWords(countryData.countryId.countryName);
+                const countryName = capitalizeWords(countryData.country_name);
                 dataArray.push({
                     val: value,
                     country: countryName,
@@ -41,22 +42,25 @@ function scaleMoneyPerBillion(moneyVal) {
     return (moneyVal / 1e9).toFixed(2);
 }
 
+
+
 export default function CountryVsCountryDistribution({ selectedCountry, selectedMetric, currentYear, validCountries, geoJsonData }) {
     const [countryMetric, setCountryMetric] = useState([]);
-
     useEffect(() => {
         async function getMetrics() {
             try {
                 const responses = await Promise.all(
                     validCountries.map(async (country) => {
-                        const response = await axios.get(`https://mideast-metrics.delightfulglacier-fb9bf0e7.eastus.azurecontainerapps.io/api/v1/countries?name=${encodeURIComponent(country.toLowerCase())}&year=${currentYear}`);
+                        const response = await supabase
+                                                .from('_country')
+                                                .select(`country_name, ${ selectedMetric }`)
+                                                .eq('country_name', country.toLowerCase())
                         if (response.data.length > 0) {
                             return response.data[0];
                         }
                     })
                 );
-
-                const uniqueResponses = Array.from(new Map(responses.filter(Boolean).map(item => [item.countryId.countryName, item])).values());
+                const uniqueResponses = Array.from(new Map(responses.filter(Boolean).map((item => [item?.country_name, item]))).values());
                 setCountryMetric(uniqueResponses);
             } catch (err) {
                 console.log(err);

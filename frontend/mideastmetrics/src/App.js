@@ -8,28 +8,29 @@ import Sidebar from "./components/Sidebar/Sidebar";
 import CountryYearDistribution from "./components/MetricDisplay/CountyYearDistribution";
 import CountryVsCountryDistribution from "./components/MetricDisplay/CountryVsCountryDistribution";
 import { MenuIcon } from '@heroicons/react/solid';
+import { supabase } from "./supabaseClient";
 
 const valid_metrics = [
-  "gdpValue",
-  "gdpGrowth",
-  "gdpPerCapita",
-  "pppValue",
-  "lifeExpectancyM",
-  "lifeExpectancyF",
-  "lifeExpectancyT",
-  "mortalityRateM",
-  "mortalityRateF",
-  "mortalityRateT",
-  "crudeBirthRateT",
+  "gdp_value",
+  "gdp_growth",
+  "gdp_per_capita",
+  "ppp_value",
+  "life_expectancym",
+  "life_expectancyf",
+  "life_expectancyt",
+  "mortality_ratem",
+  "mortality_ratef",
+  "mortality_ratet",
+  "crude_birth_ratet",
   "taxes",
-  "netMigration",
-  "importsOfGoodsAndServices",
-  "malePop",
-  "femalePop",
-  "totalPop",
-  "unemploymentRateT",
-  "unemploymentRateF",
-  "unemploymentRateM"
+  "net_migration",
+  "imports_of_goods_and_services",
+  "male_pop",
+  "female_pop",
+  "total_pop",
+  "unemployment_ratet",
+  "unemployment_ratef",
+  "unemployment_ratem"
 ];
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
   const updateYear = (increment) => () => {
     setCurrentYear(currentYear + (increment ? 1 : -1));
   };
+  
 
   useEffect(() => {
     fetch(MENA)

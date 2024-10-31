@@ -20,7 +20,7 @@ export default function CountryLineChart({ chartData, selectedCountry, selectedM
                 ]}
                 grid={{ vertical: true, horizontal: true }}
                 yAxis={[{ label: `${selectedMetric}`, color: '#fff' }]}
-                xAxis={[{ data: chartData.map(item => item.year), label: 'Year', scaleType: 'band', color: '#fff' }]}
+                xAxis={[{ data: chartData.map(item => item?.year), label: 'Year', scaleType: 'band', color: '#fff' }]}
                 margin={{ top: 10, bottom: 70, left: 70, right: 10 }}
                 colors={['#4ade80']}
                 style={{ color: '#fff' }}

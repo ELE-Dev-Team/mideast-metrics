@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import CountryLineChart from "./CountryLineChart";
+import { supabase } from "../../supabaseClient";
 
 function getSelectedDataDistribution(countryDataDistribution, selectedMetric) {
     let dataArray = [];
     countryDataDistribution.forEach((yearData) => {
-        if (yearData.countryId.year >= 1980 && yearData.countryId.year <= 2021 && yearData[selectedMetric] !== 0) {
+        if (yearData.year >= 1980 && yearData.year <= 2021 && yearData[selectedMetric] !== 0) {
             dataArray.push({
                 val: parseData(yearData[selectedMetric], selectedMetric),
-                year: yearData.countryId.year
+                year: yearData.year
             });
         }
     });
@@ -45,7 +46,10 @@ export default function CountryYearDistribution({ selectedMetric, selectedCountr
     useEffect(() => {
         async function getMetrics() {
             try {
-                const response = await axios.get(`https://mideast-metrics.delightfulglacier-fb9bf0e7.eastus.azurecontainerapps.io/api/v1/countries?name=${selectedCountry.toLowerCase()}`);
+                const response = await supabase
+                                                .from('_country')
+                                                .select(`country_name, year, ${ selectedMetric }`)
+                                                .eq('country_name', selectedCountry.toLowerCase())
                 setCountryMetric(response.data || []);
             } catch (err) {
                 console.log(err);
@@ -55,14 +59,13 @@ export default function CountryYearDistribution({ selectedMetric, selectedCountr
     }, [selectedCountry, currentYear]);
 
     const chartData = getSelectedDataDistribution(countryMetric, selectedMetric);
-
     return (
         <div className="flex flex-col items-center justify-center w-full">
-            <CountryLineChart
+            {chartData && <CountryLineChart
                 chartData={chartData}
                 selectedCountry={selectedCountry}
                 selectedMetric={selectedMetric}
-            />
+            />}
         </div>
     );
 }
