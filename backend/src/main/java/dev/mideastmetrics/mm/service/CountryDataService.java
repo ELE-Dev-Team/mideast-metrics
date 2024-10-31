@@ -93,10 +93,11 @@ public class CountryDataService {
 
     private CountryData mapToCountry(Indicator indicator) {
         String countryName = cleanCountryName(indicator.getCountry().getValue());
-        Year year = null;
+        Integer year = null;
 
         try {
-            year = Year.parse(indicator.getDate());
+
+            year = Integer.parseInt(indicator.getDate());
         } catch (DateTimeParseException e) {
             e.printStackTrace();
         }
@@ -121,7 +122,7 @@ public class CountryDataService {
         return countryData;
     }
 
-    public List<CountryData> getCountryData(String countryName, Year year) {
+    public List<CountryData> getCountryData(String countryName, Integer year) {
         if(year != null) {
             return countryDataRepo.findByCountryIdCountryNameAndCountryIdYear(countryName.toLowerCase(), year);
         } else {

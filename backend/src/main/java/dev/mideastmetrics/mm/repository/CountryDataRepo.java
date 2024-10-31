@@ -13,5 +13,5 @@ import java.util.List;
 public interface CountryDataRepo extends JpaRepository<CountryData, String> {
     CountryData findByCountryId(CountryId countryId);
     List<CountryData> findByCountryIdCountryName(String countryName);
-    List<CountryData> findByCountryIdCountryNameAndCountryIdYear(String countryName, Year year);
+    List<CountryData> findByCountryIdCountryNameAndCountryIdYear(String countryName, Integer year);
 }

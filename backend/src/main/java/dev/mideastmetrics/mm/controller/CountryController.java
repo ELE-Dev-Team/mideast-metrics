@@ -13,7 +13,7 @@ import java.util.List;
 
 
 @Controller
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/countries")
 public class CountryController {
 
@@ -26,7 +26,7 @@ public class CountryController {
 
     @GetMapping()
     public ResponseEntity<List<CountryData>> getCountryData(@RequestParam("name") String countryName,
-                                                            @RequestParam(value="year", required = false) Year year) {
+                                                            @RequestParam(value="year", required = false) Integer year) {
         List<CountryData> data = countryDataService.getCountryData(countryName, year);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }

@@ -41,7 +41,7 @@ public class CountryData {
     private double unemploymentRateF;
     private double unemploymentRateM;
 
-    public CountryData(String countryName, Year date) {
+    public CountryData(String countryName, Integer date) {
         this.countryId = new CountryId(countryName, date);
     }
 
