@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import CountryBarChart from "./CountryBarChart";
 import CountryPieChart from "./CountryPieChart";
 import TopThreeCountries from "./TopThreeCountries";
@@ -7,6 +6,7 @@ import BottomThreeCountries from "./BottomThreeCountries";
 import MetricStatistics from "./MetricStatistics";
 import { calculateStatistics } from "./statisticsUtils";
 import { supabase } from "../../supabaseClient";
+import { ThreeCircles } from "react-loader-spinner";
 
 function getSelectedDataDistribution(countryDataDistribution, selectedMetric, geoJsonData) {
     let dataArray = [];
@@ -52,9 +52,9 @@ export default function CountryVsCountryDistribution({ selectedCountry, selected
                 const responses = await Promise.all(
                     validCountries.map(async (country) => {
                         const response = await supabase
-                                                .from('_country')
-                                                .select(`country_name, ${ selectedMetric }`)
-                                                .eq('country_name', country.toLowerCase())
+                            .from('_country')
+                            .select(`country_name, ${selectedMetric}`)
+                            .eq('country_name', country.toLowerCase())
                         if (response.data.length > 0) {
                             return response.data[0];
                         }
@@ -67,7 +67,7 @@ export default function CountryVsCountryDistribution({ selectedCountry, selected
             }
         }
         getMetrics();
-    }, [currentYear, validCountries]);
+    }, [currentYear, validCountries, selectedMetric]);
 
 
 
@@ -79,33 +79,45 @@ export default function CountryVsCountryDistribution({ selectedCountry, selected
 
     return (
         <div className="flex flex-col items-center justify-center w-full space-y-8">
-            <CountryBarChart
-                chartData={chartData}
-                selectedMetric={selectedMetric}
-                currentYear={currentYear}
-            />
-            <CountryPieChart
-                chartData={chartData}
-                selectedMetric={selectedMetric}
-            />
-            <TopThreeCountries
-                topThreeData={topThreeData}
-                selectedCountryData={selectedCountryData}
-                selectedMetric={selectedMetric}
-                currentYear={currentYear}
-            />
-            <BottomThreeCountries
-                bottomThreeData={bottomThreeData}
-                selectedCountryData={selectedCountryData}
-                selectedMetric={selectedMetric}
-                currentYear={currentYear}
-                totalCountries={chartData.length}
-            />
-            <MetricStatistics
-                statistics={statistics}
-                selectedMetric={selectedMetric}
-                currentYear={currentYear}
-            />
+            {chartData.length > 0 ? <>
+                <CountryBarChart
+                    chartData={chartData}
+                    selectedMetric={selectedMetric}
+                    currentYear={currentYear}
+                />
+                <CountryPieChart
+                    chartData={chartData}
+                    selectedMetric={selectedMetric}
+                />
+                <TopThreeCountries
+                    topThreeData={topThreeData}
+                    selectedCountryData={selectedCountryData}
+                    selectedMetric={selectedMetric}
+                    currentYear={currentYear}
+                />
+                <BottomThreeCountries
+                    bottomThreeData={bottomThreeData}
+                    selectedCountryData={selectedCountryData}
+                    selectedMetric={selectedMetric}
+                    currentYear={currentYear}
+                    totalCountries={chartData.length}
+                />
+                <MetricStatistics
+                    statistics={statistics}
+                    selectedMetric={selectedMetric}
+                    currentYear={currentYear}
+                />
+            </> :
+                <ThreeCircles
+                    visible={true}
+                    height="200"
+                    width="200"
+                    color="#4fa94d"
+                    ariaLabel="three-circles-loading"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                />
+            }
         </div>
     );
 }

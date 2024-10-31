@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import CountryLineChart from "./CountryLineChart";
 import { supabase } from "../../supabaseClient";
+import { ThreeCircles } from "react-loader-spinner";
 
 function getSelectedDataDistribution(countryDataDistribution, selectedMetric) {
     let dataArray = [];
@@ -47,25 +47,36 @@ export default function CountryYearDistribution({ selectedMetric, selectedCountr
         async function getMetrics() {
             try {
                 const response = await supabase
-                                                .from('_country')
-                                                .select(`country_name, year, ${ selectedMetric }`)
-                                                .eq('country_name', selectedCountry.toLowerCase())
+                    .from('_country')
+                    .select(`country_name, year, ${selectedMetric}`)
+                    .eq('country_name', selectedCountry.toLowerCase())
                 setCountryMetric(response.data || []);
             } catch (err) {
                 console.log(err);
             }
         }
         getMetrics();
-    }, [selectedCountry, currentYear]);
+    }, [selectedCountry, currentYear, selectedMetric]);
 
     const chartData = getSelectedDataDistribution(countryMetric, selectedMetric);
     return (
         <div className="flex flex-col items-center justify-center w-full">
-            {chartData && <CountryLineChart
+            {chartData.length > 0 ? <CountryLineChart
                 chartData={chartData}
                 selectedCountry={selectedCountry}
                 selectedMetric={selectedMetric}
-            />}
+            />
+                :
+                <ThreeCircles
+                    visible={true}
+                    height="200"
+                    width="200"
+                    color="#4fa94d"
+                    ariaLabel="three-circles-loading"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                />
+            }
         </div>
     );
 }

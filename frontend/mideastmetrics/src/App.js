@@ -8,7 +8,6 @@ import Sidebar from "./components/Sidebar/Sidebar";
 import CountryYearDistribution from "./components/MetricDisplay/CountyYearDistribution";
 import CountryVsCountryDistribution from "./components/MetricDisplay/CountryVsCountryDistribution";
 import { MenuIcon } from '@heroicons/react/solid';
-import { supabase } from "./supabaseClient";
 
 const valid_metrics = [
   "gdp_value",
